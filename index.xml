@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My New Hugo Site</title>
+    <link>https://zhengyjzoe.github.io/</link>
+    <description>Recent content on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 11 Sep 2020 20:21:41 +0800</lastBuildDate>
+    
+	<atom:link href="https://zhengyjzoe.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>sklearn-文本特征提取</title>
+      <link>https://zhengyjzoe.github.io/post/blog/</link>
+      <pubDate>Fri, 11 Sep 2020 20:21:41 +0800</pubDate>
+      
+      <guid>https://zhengyjzoe.github.io/post/blog/</guid>
+      <description>sklearn-文本特征提取  模块 sklearn.feature_extraction 可用于提取符合机器学习算法支持的特征
+ CountVectorizer 计算机编码文本思路
+ 对文本编码，就是让词语与数字对应起来，建立基于给定文本的词典。（fit方法 ） 再根据词典对所有的文本数据进行转码。（transform方法）  首先给出一个语料（list结构）
+corpus = [ &amp;#39;This is the first document.&amp;#39;, &amp;#39;This document is the second document.&amp;#39;, &amp;#39;And this is the third one.&amp;#39;, &amp;#39;Is this the first document?&amp;#39;, ] 根据上述思路对文本进行编码
+利用给定的语料corpus生成词典，使用方法get_feature_names查看所有特征词
+from sklearn.feature_extraction.text import CountVectorizer vectorize = CountVectorizer() vectorize.fit(corpus) vectorize.get_feature_names() Output： [&amp;#39;and&amp;#39;, &amp;#39;document&amp;#39;, &amp;#39;first&amp;#39;, &amp;#39;is&amp;#39;, &amp;#39;one&amp;#39;, &amp;#39;second&amp;#39;, &amp;#39;the&amp;#39;, &amp;#39;third&amp;#39;, &amp;#39;this&amp;#39;] 这里，特征集（get_feature——name）返回的结果，有要注意的事情：
+ 所有的单词都是小写 单词长度小于两个字母的，会被剔除掉 标点符号会剔除掉 不重复 这个特征集是有顺序的  接下来会按照这个顺序去编码文本数据，这里会出现一个新概念文档-词频矩阵（document-term matrix），英文简写为dtm。我们让机器挖掘文本中的规律时，喂给机器的数据就是 这文档-词频矩阵（document-term matrix）。</description>
+    </item>
+    
+  </channel>
+</rss>
