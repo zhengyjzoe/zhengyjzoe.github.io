@@ -169,33 +169,6 @@
         ">
             
 
-<div class="post-preview">
-    <a href="https://zhengyjzoe.github.io/post/blog/">
-        <h2 class="post-title">
-            sklearn-文本特征提取
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            sklearn-文本特征提取  模块 sklearn.feature_extraction 可用于提取符合机器学习算法支持的特征
- CountVectorizer 计算机编码文本思路
- 对文本编码，就是让词语与数字对应起来，建立基于给定文本的词典。（fit方法 ） 再根据词典对所有的文本数据进行转码。（transform方法）  首先给出一个语料（list结构）
-corpus = [ &#39;This is the first document.&#39;, &#39;This document is the second document.&#39;, &#39;And this is the third one.&#39;, &#39;Is this the first document?&#39;, ] 根据上述思路对文本进行编码
-利用给定的语料corpus生成词典，使用方法get_feature_names查看所有特征词
-from sklearn.feature_extraction.text import CountVectorizer vectorize = CountVectorizer() vectorize.fit(corpus) vectorize.get_feature_names() Output： [&#39;and&#39;, &#39;document&#39;, &#39;first&#39;, &#39;is&#39;, &#39;one&#39;, &#39;second&#39;, &#39;the&#39;, &#39;third&#39;, &#39;this&#39;] 这里，特征集（get_feature——name）返回的结果，有要注意的事情：
- 所有的单词都是小写 单词长度小于两个字母的，会被剔除掉 标点符号会剔除掉 不重复 这个特征集是有顺序的  接下来会按照这个顺序去编码文本数据，这里会出现一个新概念文档-词频矩阵（document-term matrix），英文简写为dtm。我们让机器挖掘文本中的规律时，喂给机器的数据就是 这文档-词频矩阵（document-term matrix）。
-       
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Yijia Zheng Friday, September 11, 2020
-    
-    
-    </p>
-
-</div>
-<hr>
-
 
             
 
