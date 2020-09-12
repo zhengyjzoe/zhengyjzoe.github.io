@@ -6,9 +6,19 @@
     <description>Recent content on Yijia Zheng</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Fri, 11 Sep 2020 20:21:41 +0800</lastBuildDate>
     
 	<atom:link href="https://zhengyjzoe.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>sklearn-文本特征提取</title>
+      <link>https://zhengyjzoe.github.io/post/blog/</link>
+      <pubDate>Fri, 11 Sep 2020 20:21:41 +0800</pubDate>
+      
+      <guid>https://zhengyjzoe.github.io/post/blog/</guid>
+      <description>sklearn-文本特征提取 模块 sklearn.feature_extraction 可用于提取符合机器学习算法支持的特征 CountVectorizer 计算机编码文本思路 对文本编码，就是让词语与数字对应起来，建立基于给定</description>
+    </item>
     
   </channel>
 </rss>

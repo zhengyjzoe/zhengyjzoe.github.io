@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://zhengyjzoe.github.io//">
-    <meta property="twitter:image" content="https://zhengyjzoe.github.io//" />
+    <meta property="og:image" content="https://zhengyjzoe.github.io/images/wallpaper1.jpg">
+    <meta property="twitter:image" content="https://zhengyjzoe.github.io/images/wallpaper1.jpg" />
     
 
     
@@ -21,9 +21,9 @@
     
 
     
-    <meta name="description" content="To be the Manba of data">
-    <meta property="og:description" content="To be the Manba of data" />
-    <meta property="twitter:description" content="To be the Manba of data" />
+    <meta name="description" content="I&#39;m an undergraduate student in Statistics and Management School at Shanghai University of Finance and Economics, ">
+    <meta property="og:description" content="I&#39;m an undergraduate student in Statistics and Management School at Shanghai University of Finance and Economics, " />
+    <meta property="twitter:description" content="I&#39;m an undergraduate student in Statistics and Management School at Shanghai University of Finance and Economics, " />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>sklearn-文本特征提取-</title>
+    <title>sklearn-文本特征提取-郑仪嘉</title>
 
     <link rel="canonical" href="/post/blog/">
 
@@ -98,6 +98,10 @@
                     
                     
 		    
+                        <li><a href="/top/cv/">CV</a></li>
+                    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
 
                     
                 </ul>
@@ -141,7 +145,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/')
+        background-image: url('/images/wallpaper1.jpg')
     }
 </style>
 <header class="intro-header">
@@ -161,6 +165,140 @@
                          
                         on 
                         Friday, September 11, 2020
+                        
+                            <span id="/post/blog/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
                         
                         
                         
@@ -190,16 +328,11 @@
                 </header>
                 <nav id="TableOfContents">
   <ul>
-    <li><a href="#sklearn-文本特征提取">sklearn-文本特征提取</a></li>
-    <li><a href="#countvectorizer">CountVectorizer</a>
+    <li>
       <ul>
-        <li><a href="#使用停用词">使用停用词</a></li>
-      </ul>
-    </li>
-    <li><a href="#tfidfvectorizer--tfidftransformer">TfidfVectorizer &amp; TfidfTransformer</a>
-      <ul>
-        <li><a href="#tfidfvectorizer">TfidfVectorizer</a></li>
-        <li><a href="#tfidftransformer">TfidfTransformer</a></li>
+        <li><a href="#sklearn-文本特征提取">sklearn-文本特征提取</a></li>
+        <li><a href="#countvectorizer">CountVectorizer</a></li>
+        <li><a href="#tfidfvectorizer--tfidftransformer">TfidfVectorizer &amp; TfidfTransformer</a></li>
       </ul>
     </li>
   </ul>
@@ -216,21 +349,21 @@
 <li>再根据词典对所有的文本数据进行转码。（transform方法）</li>
 </ul>
 <p>首先给出一个语料（<em>list</em>结构）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">corpus <span style="color:#f92672">=</span> [
-    <span style="color:#e6db74">&#39;This is the first document.&#39;</span>,
-    <span style="color:#e6db74">&#39;This document is the second document.&#39;</span>,
-    <span style="color:#e6db74">&#39;And this is the third one.&#39;</span>,
-    <span style="color:#e6db74">&#39;Is this the first document?&#39;</span>,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">corpus <span style="color:#ff79c6">=</span> [
+    <span style="color:#f1fa8c">&#39;This is the first document.&#39;</span>,
+    <span style="color:#f1fa8c">&#39;This document is the second document.&#39;</span>,
+    <span style="color:#f1fa8c">&#39;And this is the third one.&#39;</span>,
+    <span style="color:#f1fa8c">&#39;Is this the first document?&#39;</span>,
 ]
 </code></pre></div><p>根据上述思路对文本进行编码</p>
 <p>利用给定的语料<em>corpus</em>生成词典，使用方法<em>get_feature_names</em>查看所有特征词</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> sklearn.feature_extraction.text <span style="color:#f92672">import</span> CountVectorizer
-vectorize <span style="color:#f92672">=</span> CountVectorizer()
-vectorize<span style="color:#f92672">.</span>fit(corpus)
-vectorize<span style="color:#f92672">.</span>get_feature_names()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> CountVectorizer
+vectorize <span style="color:#ff79c6">=</span> CountVectorizer()
+vectorize<span style="color:#ff79c6">.</span>fit(corpus)
+vectorize<span style="color:#ff79c6">.</span>get_feature_names()
 
-Output<span style="color:#960050;background-color:#1e0010">：</span>
-[<span style="color:#e6db74">&#39;and&#39;</span>, <span style="color:#e6db74">&#39;document&#39;</span>, <span style="color:#e6db74">&#39;first&#39;</span>, <span style="color:#e6db74">&#39;is&#39;</span>, <span style="color:#e6db74">&#39;one&#39;</span>, <span style="color:#e6db74">&#39;second&#39;</span>, <span style="color:#e6db74">&#39;the&#39;</span>, <span style="color:#e6db74">&#39;third&#39;</span>, <span style="color:#e6db74">&#39;this&#39;</span>]
+Output：
+[<span style="color:#f1fa8c">&#39;and&#39;</span>, <span style="color:#f1fa8c">&#39;document&#39;</span>, <span style="color:#f1fa8c">&#39;first&#39;</span>, <span style="color:#f1fa8c">&#39;is&#39;</span>, <span style="color:#f1fa8c">&#39;one&#39;</span>, <span style="color:#f1fa8c">&#39;second&#39;</span>, <span style="color:#f1fa8c">&#39;the&#39;</span>, <span style="color:#f1fa8c">&#39;third&#39;</span>, <span style="color:#f1fa8c">&#39;this&#39;</span>]
 </code></pre></div><p>这里，特征集（get_feature——name）返回的结果，有要注意的事情：</p>
 <ul>
 <li>所有的单词都是小写</li>
@@ -240,19 +373,19 @@ Output<span style="color:#960050;background-color:#1e0010">：</span>
 <li>这个特征集是有顺序的</li>
 </ul>
 <p>接下来会按照这个顺序去编码文本数据，这里会出现一个新概念<strong>文档-词频矩阵（document-term matrix）</strong>，英文简写为dtm。我们让机器挖掘文本中的规律时，喂给机器的数据就是 这<strong>文档-词频矩阵（document-term matrix）</strong>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dtm <span style="color:#f92672">=</span> vectorize<span style="color:#f92672">.</span>transform(corpus)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>transform(corpus)
 
 Output:
-<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">4</span>x9 sparse matrix of type <span style="color:#e6db74">&#39;&lt;class &#39;</span>numpy<span style="color:#f92672">.</span>int64<span style="color:#e6db74">&#39;&gt;&#39;</span>
-	<span style="color:#66d9ef">with</span> <span style="color:#ae81ff">21</span> stored elements <span style="color:#f92672">in</span> Compressed Sparse Row format<span style="color:#f92672">&gt;</span>
+<span style="color:#ff79c6">&lt;</span><span style="color:#bd93f9">4</span>x9 sparse matrix of <span style="color:#8be9fd;font-style:italic">type</span> <span style="color:#f1fa8c">&#39;&lt;class &#39;</span>numpy<span style="color:#ff79c6">.</span>int64<span style="color:#f1fa8c">&#39;&gt;&#39;</span>
+	<span style="color:#ff79c6">with</span> <span style="color:#bd93f9">21</span> stored elements <span style="color:#ff79c6">in</span> Compressed Sparse Row format<span style="color:#ff79c6">&gt;</span>
 </code></pre></div><p>可以看到这是一个（4*9）的矩阵，为了更直观地展示数据，使用pandas将其表现出来</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
-pd<span style="color:#f92672">.</span>DataFrame(dtm<span style="color:#f92672">.</span>toarray(), columns <span style="color:#f92672">=</span> vectorize<span style="color:#f92672">.</span>get_feature_names())
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">import</span> pandas <span style="color:#ff79c6">as</span> pd
+pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>get_feature_names())
 </code></pre></div><p>表中的每一行代表一个文档（即一个<em>sample</em>），列表示特征词，单元格中是该文档对应特征词的词频。</p>
 <p>这里需要注意一点，<em>transform</em>的语料中无法编码<em>fit</em>生成的字典中不包含的特征词，这里举一个例子：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">new_corpus <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;I think this document is good&#39;</span>]
-new_dtm <span style="color:#f92672">=</span> vectorize<span style="color:#f92672">.</span>transform(new_corpus)
-pd<span style="color:#f92672">.</span>DataFrame(new_dtm<span style="color:#f92672">.</span>toarray(), columns<span style="color:#f92672">=</span>vectorize<span style="color:#f92672">.</span>get_feature_names())
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">new_corpus <span style="color:#ff79c6">=</span> [<span style="color:#f1fa8c">&#39;I think this document is good&#39;</span>]
+new_dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>transform(new_corpus)
+pd<span style="color:#ff79c6">.</span>DataFrame(new_dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
 </code></pre></div><p>这里只解析了拟合vectorize时所包含的词（corpus中包含的词），[I, think, good]没有显示</p>
 <p>我们机器学习所用的数据，一般被分成训练集和测试集。训练集是为了让机器学习数据的规律，测试集是为了验证规律的有效性。训练集本质上代表的是过去及现在已知的数据，测试集本质上代表的是未来的未知数据（现在不存在的数据），我们是用已知的数据预测未来。所以我们只能让fit方法操作于训练集，构建基于过去或已知数据的特征集。</p>
 <h3 id="使用停用词">使用停用词</h3>
@@ -271,23 +404,23 @@ pd<span style="color:#f92672">.</span>DataFrame(new_dtm<span style="color:#f9267
 <p>scikit-learn 在两个类中实现了TF-IDF 方法：<code>TfidfTransformer </code>和<code> TfidfVectorizer</code>，前者接受 <code>CountVectorizer</code> 生成的稀疏矩阵并将其变换，后者接受文本数据并完成词袋特征提取与 TF-IDF变换，二者都以文档为处理单位默认进行了l2正则化，具体参数可参见<a href="https://scikit-learn.org/stable/modules/feature_extraction.html">文档</a>。</p>
 <h3 id="tfidfvectorizer">TfidfVectorizer</h3>
 <p>为了体现TF-IDF的优越性，重新定义训练语料，这里使用了<code>fit_transform</code>，即对同一语料进行两个过程。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> sklearn.feature_extraction.text <span style="color:#f92672">import</span> TfidfVectorizer
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> TfidfVectorizer
 
-corpus <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;I am a good student&#39;</span>, <span style="color:#e6db74">&#39;I am going to zoo today&#39;</span>]
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_dtm</span>(doc):
-    vectorize <span style="color:#f92672">=</span> TfidfVectorizer()
-    dtm <span style="color:#f92672">=</span> vectorize<span style="color:#f92672">.</span>fit_transform(doc)
-    <span style="color:#66d9ef">return</span> pd<span style="color:#f92672">.</span>DataFrame(dtm<span style="color:#f92672">.</span>toarray(), columns<span style="color:#f92672">=</span>vectorize<span style="color:#f92672">.</span>get_feature_names())
+corpus <span style="color:#ff79c6">=</span> [<span style="color:#f1fa8c">&#39;I am a good student&#39;</span>, <span style="color:#f1fa8c">&#39;I am going to zoo today&#39;</span>]
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">get_dtm</span>(doc):
+    vectorize <span style="color:#ff79c6">=</span> TfidfVectorizer()
+    dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>fit_transform(doc)
+    <span style="color:#ff79c6">return</span> pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
 
 get_dtm(corpus)
 </code></pre></div><p>输出的结果中，<code>I</code>由于长度小于2，没有进入特征词字典中，同时，由于<code>am</code>在两个document中均有出现，在每个document（每行）中，<code>am</code>的取值最小，这也体现了该统计方法的合理性。</p>
 <h3 id="tfidftransformer">TfidfTransformer</h3>
 <p><code>TfidfTransformer</code>接收的对象不再像前者一样是一个document的list，它接收<code>CountVectorizer</code>统计后的词频矩阵，此处将上文使用<code>CountVectorizer</code>生成的<code>dtm</code>作为编码器的输入:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> sklearn.feature_extraction.text <span style="color:#f92672">import</span> TfidfTransformer
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> TfidfTransformer
 
-transformer <span style="color:#f92672">=</span> TfidfTransformer(smooth_idf<span style="color:#f92672">=</span>False)
-tfidf <span style="color:#f92672">=</span> transformer<span style="color:#f92672">.</span>fit_transform(dtm)
-pd<span style="color:#f92672">.</span>DataFrame(dtm<span style="color:#f92672">.</span>toarray(), columns<span style="color:#f92672">=</span>vectorize<span style="color:#f92672">.</span>get_feature_names())
+transformer <span style="color:#ff79c6">=</span> TfidfTransformer(smooth_idf<span style="color:#ff79c6">=</span>False)
+tfidf <span style="color:#ff79c6">=</span> transformer<span style="color:#ff79c6">.</span>fit_transform(dtm)
+pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
 </code></pre></div><p>其对同一语料得到的结果与<code> TfidfVectorizer</code>相同，也可以用上述理论进行分析。</p>
 <p>虽然tf-idf标准化通常非常有用，但是可能有一种情况是二元变量显示会提供更好的特征。 这可以使用类 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer"><code>CountVectorizer</code></a> 的 <code>二进制</code> 参数来实现。 特别地，一些估计器，诸如 <a href="https://sklearn.apachecn.org/docs/master/naive_bayes.html#bernoulli-naive-bayes">伯努利朴素贝叶斯</a> 显式的使用离散的布尔随机变量。 而且，非常短的文本很可能影响 tf-idf 值，而二进制出现信息更稳定。</p>
 <p><strong>REFERENCE</strong></p>
@@ -335,6 +468,15 @@ pd<span style="color:#f92672">.</span>DataFrame(dtm<span style="color:#f92672">.
                 <ul class="list-inline text-center">
                    
                     
+                    <li>
+                        <a href="mailto:zhengyjzoe@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
                     
                     
                     
@@ -345,9 +487,27 @@ pd<span style="color:#f92672">.</span>DataFrame(dtm<span style="color:#f92672">.
 		    
                     
                     
+                    <li>
+                        <a target="_blank" href="https://github.com/zhengyjzoe">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
                     
                     
                     
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/yijia-zheng-6a9636172/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
                     
                     
                     

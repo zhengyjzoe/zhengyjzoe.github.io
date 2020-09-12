@@ -3,15 +3,26 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://zhengyjzoe.github.io/post/</loc>
+    <lastmod>2020-09-11T20:21:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhengyjzoe.github.io/post/blog/</loc>
+    <lastmod>2020-09-11T20:21:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhengyjzoe.github.io/</loc>
+    <lastmod>2020-09-11T20:21:41+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://zhengyjzoe.github.io/categories/</loc>
   </url>
   
   <url>
     <loc>https://zhengyjzoe.github.io/tags/</loc>
-  </url>
-  
-  <url>
-    <loc>https://zhengyjzoe.github.io/</loc>
   </url>
   
 </urlset>
