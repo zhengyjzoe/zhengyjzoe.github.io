@@ -12,12 +12,21 @@
     
     
     <item>
-      <title>受限玻尔兹曼机——介绍&#43;简单推断</title>
+      <title>受限玻尔兹曼机</title>
       <link>https://zhengyjzoe.github.io/post/rbm/</link>
       <pubDate>Thu, 10 Dec 2020 18:11:44 +0800</pubDate>
       
       <guid>https://zhengyjzoe.github.io/post/rbm/</guid>
       <description>受限玻尔兹曼机（1） 本文仅针对学习进行简单记录，后续会针对论文所得整理完整笔记 介绍 玻尔兹曼机是一种存在隐节点的无向图模型。在图模型中最简单的</description>
+    </item>
+    
+    <item>
+      <title>MCMC</title>
+      <link>https://zhengyjzoe.github.io/post/mcmc/</link>
+      <pubDate>Wed, 04 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://zhengyjzoe.github.io/post/mcmc/</guid>
+      <description>MCMC 是一种随机的近似推断，其核心就是基于采样的随机近似方法蒙特卡洛方法。对于采样任务来说，有下面一些常用的场景： 采样作为任务，用于生成新的样本</description>
     </item>
     
     <item>
