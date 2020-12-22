@@ -6,10 +6,19 @@
     <description>Recent content on Yijia Zheng</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Sep 2020 20:21:41 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 10 Dec 2020 18:11:44 +0800</lastBuildDate>
     
 	<atom:link href="https://zhengyjzoe.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>受限玻尔兹曼机——介绍&#43;简单推断</title>
+      <link>https://zhengyjzoe.github.io/post/rbm/</link>
+      <pubDate>Thu, 10 Dec 2020 18:11:44 +0800</pubDate>
+      
+      <guid>https://zhengyjzoe.github.io/post/rbm/</guid>
+      <description>受限玻尔兹曼机（1） 本文仅针对学习进行简单记录，后续会针对论文所得整理完整笔记 玻尔兹曼机是一种存在隐节点的无向图模型。在图模型中最简单的是朴</description>
+    </item>
     
     <item>
       <title>sklearn-文本特征提取</title>

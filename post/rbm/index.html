@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="sklearn-文本特征提取" />
-    <meta property="og:title" content="sklearn-文本特征提取" />
-    <meta property="twitter:title" content="sklearn-文本特征提取" />
+    <meta name="title" content="受限玻尔兹曼机——介绍&#43;简单推断" />
+    <meta property="og:title" content="受限玻尔兹曼机——介绍&#43;简单推断" />
+    <meta property="twitter:title" content="受限玻尔兹曼机——介绍&#43;简单推断" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>sklearn-文本特征提取-郑仪嘉</title>
+    <title>受限玻尔兹曼机——介绍&#43;简单推断-郑仪嘉</title>
 
-    <link rel="canonical" href="/post/sklearn-%E6%96%87%E6%9C%AC%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/">
+    <link rel="canonical" href="/post/rbm/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -156,7 +156,7 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>sklearn-文本特征提取</h1>
+                    <h1>受限玻尔兹曼机——介绍&#43;简单推断</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by 
@@ -164,9 +164,9 @@
                                 Yijia Zheng
                          
                         on 
-                        Friday, September 11, 2020
+                        Thursday, December 10, 2020
                         
-                            <span id="/post/sklearn-%E6%96%87%E6%9C%AC%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/rbm/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -328,104 +328,72 @@ $(function() {
                 </header>
                 <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#受限玻尔兹曼机1">受限玻尔兹曼机（1）</a>
       <ul>
-        <li><a href="#sklearn-文本特征提取">sklearn-文本特征提取</a></li>
-        <li><a href="#countvectorizer">CountVectorizer</a></li>
-        <li><a href="#tfidfvectorizer--tfidftransformer">TfidfVectorizer &amp; TfidfTransformer</a></li>
+        <li><a href="#推断">推断</a></li>
       </ul>
     </li>
   </ul>
 </nav>
                 
-                <h2 id="sklearn-文本特征提取">sklearn-文本特征提取</h2>
+                <h1 id="受限玻尔兹曼机1">受限玻尔兹曼机（1）</h1>
 <blockquote>
-<p>模块 <a href="https://sklearn.apachecn.org/docs/master/classes.html#module-sklearn.feature_extraction"><code>sklearn.feature_extraction</code></a> 可用于提取符合机器学习算法支持的特征</p>
+<p>本文仅针对学习进行简单记录，后续会针对论文所得整理完整笔记</p>
 </blockquote>
-<h2 id="countvectorizer">CountVectorizer</h2>
-<p>计算机编码文本思路</p>
-<ul>
-<li>对文本编码，就是让词语与数字对应起来，建立基于给定文本的词典。（fit方法 ）</li>
-<li>再根据词典对所有的文本数据进行转码。（transform方法）</li>
-</ul>
-<p>首先给出一个语料（<em>list</em>结构）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">corpus <span style="color:#ff79c6">=</span> [
-    <span style="color:#f1fa8c">&#39;This is the first document.&#39;</span>,
-    <span style="color:#f1fa8c">&#39;This document is the second document.&#39;</span>,
-    <span style="color:#f1fa8c">&#39;And this is the third one.&#39;</span>,
-    <span style="color:#f1fa8c">&#39;Is this the first document?&#39;</span>,
-]
-</code></pre></div><p>根据上述思路对文本进行编码</p>
-<p>利用给定的语料<em>corpus</em>生成词典，使用方法<em>get_feature_names</em>查看所有特征词</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> CountVectorizer
-vectorize <span style="color:#ff79c6">=</span> CountVectorizer()
-vectorize<span style="color:#ff79c6">.</span>fit(corpus)
-vectorize<span style="color:#ff79c6">.</span>get_feature_names()
-
-Output：
-[<span style="color:#f1fa8c">&#39;and&#39;</span>, <span style="color:#f1fa8c">&#39;document&#39;</span>, <span style="color:#f1fa8c">&#39;first&#39;</span>, <span style="color:#f1fa8c">&#39;is&#39;</span>, <span style="color:#f1fa8c">&#39;one&#39;</span>, <span style="color:#f1fa8c">&#39;second&#39;</span>, <span style="color:#f1fa8c">&#39;the&#39;</span>, <span style="color:#f1fa8c">&#39;third&#39;</span>, <span style="color:#f1fa8c">&#39;this&#39;</span>]
-</code></pre></div><p>这里，特征集（get_feature——name）返回的结果，有要注意的事情：</p>
-<ul>
-<li>所有的单词都是小写</li>
-<li>单词长度小于两个字母的，会被剔除掉</li>
-<li>标点符号会剔除掉</li>
-<li>不重复</li>
-<li>这个特征集是有顺序的</li>
-</ul>
-<p>接下来会按照这个顺序去编码文本数据，这里会出现一个新概念<strong>文档-词频矩阵（document-term matrix）</strong>，英文简写为dtm。我们让机器挖掘文本中的规律时，喂给机器的数据就是 这<strong>文档-词频矩阵（document-term matrix）</strong>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>transform(corpus)
-
-Output:
-<span style="color:#ff79c6">&lt;</span><span style="color:#bd93f9">4</span>x9 sparse matrix of <span style="color:#8be9fd;font-style:italic">type</span> <span style="color:#f1fa8c">&#39;&lt;class &#39;</span>numpy<span style="color:#ff79c6">.</span>int64<span style="color:#f1fa8c">&#39;&gt;&#39;</span>
-	<span style="color:#ff79c6">with</span> <span style="color:#bd93f9">21</span> stored elements <span style="color:#ff79c6">in</span> Compressed Sparse Row format<span style="color:#ff79c6">&gt;</span>
-</code></pre></div><p>可以看到这是一个（4*9）的矩阵，为了更直观地展示数据，使用pandas将其表现出来</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">import</span> pandas <span style="color:#ff79c6">as</span> pd
-pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>get_feature_names())
-</code></pre></div><p>表中的每一行代表一个文档（即一个<em>sample</em>），列表示特征词，单元格中是该文档对应特征词的词频。</p>
-<p>这里需要注意一点，<em>transform</em>的语料中无法编码<em>fit</em>生成的字典中不包含的特征词，这里举一个例子：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">new_corpus <span style="color:#ff79c6">=</span> [<span style="color:#f1fa8c">&#39;I think this document is good&#39;</span>]
-new_dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>transform(new_corpus)
-pd<span style="color:#ff79c6">.</span>DataFrame(new_dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
-</code></pre></div><p>这里只解析了拟合vectorize时所包含的词（corpus中包含的词），[I, think, good]没有显示</p>
-<p>我们机器学习所用的数据，一般被分成训练集和测试集。训练集是为了让机器学习数据的规律，测试集是为了验证规律的有效性。训练集本质上代表的是过去及现在已知的数据，测试集本质上代表的是未来的未知数据（现在不存在的数据），我们是用已知的数据预测未来。所以我们只能让fit方法操作于训练集，构建基于过去或已知数据的特征集。</p>
-<h3 id="使用停用词">使用停用词</h3>
-<p>停止词是像“and”、“the”、“him”这样的词，这些词在表示文本内容时被认为是没有信息的，可以删除它们，以避免它们被理解为预测的信号。然而，有时，类似的词对预测很有用，比如在对写作风格或性格进行分类时。</p>
-<p>在选择停用词时应当尽可能地谨慎，流行的停止词列表可能包括对某些任务(如计算机)具有高度信息性的词。</p>
-<p>同时还应该确保停止单词列表具有与矢量化器中使用的相同的预处理和标记。单词&quot;we’ve&quot;被<code>CountVectorizer</code>的默认记号分配器分割成&quot;we&quot;和&quot;ve&rdquo;，所以如果&quot;we’ve&quot;在停止词列表中，但&quot;ve&quot;不在，&ldquo;ve&quot;会被保留在转换后的文本中。我们的矢量化器将尝试识别和警告某些类型的不一致性。</p>
-<h2 id="tfidfvectorizer--tfidftransformer">TfidfVectorizer &amp; TfidfTransformer</h2>
-<p>上述模型有很多缺点，它没有考虑单词之间的顺序，也无法反映出一个句子的关键词。在这里，我们继续学习scikit库的另一个编码器——<code>TfidfVectorizer</code>。</p>
-<p>词频 - 逆向文档频率（term frequency–inverse document frequency，tf-idf）方法，对在某个特定文档中经常出现的术语给予很高的权重，但对在语料库的许多文档中都经常出现的术语给予的权重却不高。</p>
-<ul>
-<li>$TF: \frac{c(word\ in\ document)}{total\ number\ of\ words\ in\ document}$</li>
-<li>$IDF:log(\frac{number\ of\ documents}{number\ of\ documents\ with\ word+1})$</li>
-</ul>
-<p>这里在分母加一是因为在实际工作中，可能先有词表，再处理文档语料， 目标词有可能是不存在任何文档中的。</p>
-<p>TF-IDF就是同时考虑以上两个统计方法：$TF\times IDF$</p>
-<p>scikit-learn 在两个类中实现了TF-IDF 方法：<code>TfidfTransformer </code>和<code> TfidfVectorizer</code>，前者接受 <code>CountVectorizer</code> 生成的稀疏矩阵并将其变换，后者接受文本数据并完成词袋特征提取与 TF-IDF变换，二者都以文档为处理单位默认进行了l2正则化，具体参数可参见<a href="https://scikit-learn.org/stable/modules/feature_extraction.html">文档</a>。</p>
-<h3 id="tfidfvectorizer">TfidfVectorizer</h3>
-<p>为了体现TF-IDF的优越性，重新定义训练语料，这里使用了<code>fit_transform</code>，即对同一语料进行两个过程。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> TfidfVectorizer
-
-corpus <span style="color:#ff79c6">=</span> [<span style="color:#f1fa8c">&#39;I am a good student&#39;</span>, <span style="color:#f1fa8c">&#39;I am going to zoo today&#39;</span>]
-<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">get_dtm</span>(doc):
-    vectorize <span style="color:#ff79c6">=</span> TfidfVectorizer()
-    dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>fit_transform(doc)
-    <span style="color:#ff79c6">return</span> pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
-
-get_dtm(corpus)
-</code></pre></div><p>输出的结果中，<code>I</code>由于长度小于2，没有进入特征词字典中，同时，由于<code>am</code>在两个document中均有出现，在每个document（每行）中，<code>am</code>的取值最小，这也体现了该统计方法的合理性。</p>
-<h3 id="tfidftransformer">TfidfTransformer</h3>
-<p><code>TfidfTransformer</code>接收的对象不再像前者一样是一个document的list，它接收<code>CountVectorizer</code>统计后的词频矩阵，此处将上文使用<code>CountVectorizer</code>生成的<code>dtm</code>作为编码器的输入:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> TfidfTransformer
-
-transformer <span style="color:#ff79c6">=</span> TfidfTransformer(smooth_idf<span style="color:#ff79c6">=</span>False)
-tfidf <span style="color:#ff79c6">=</span> transformer<span style="color:#ff79c6">.</span>fit_transform(dtm)
-pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
-</code></pre></div><p>其对同一语料得到的结果与<code> TfidfVectorizer</code>相同，也可以用上述理论进行分析。</p>
-<p>虽然tf-idf标准化通常非常有用，但是可能有一种情况是二元变量显示会提供更好的特征。 这可以使用类 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer"><code>CountVectorizer</code></a> 的 <code>二进制</code> 参数来实现。 特别地，一些估计器，诸如 <a href="https://sklearn.apachecn.org/docs/master/naive_bayes.html#bernoulli-naive-bayes">伯努利朴素贝叶斯</a> 显式的使用离散的布尔随机变量。 而且，非常短的文本很可能影响 tf-idf 值，而二进制出现信息更稳定。</p>
-<p><strong>REFERENCE</strong></p>
-<p><a href="https://scikit-learn.org/stable/modules/feature_extraction.html">sklearn-Feature extraction</a></p>
-<p><a href="https://mp.weixin.qq.com/s?__biz=MzI1MTE2ODg4MA==&amp;mid=2650068998&amp;idx=1&amp;sn=af10c62d945129c92e9cf6d99f02ae3f&amp;chksm=f1f76919c680e00f7e85b05f0ac223c4f09e2c47d45968736c6d01ed0e763fa5142869327062&amp;scene=21#wechat_redirect">如何从文本中提取特征信息？</a></p>
+<p>玻尔兹曼机是一种存在隐节点的无向图模型。在图模型中最简单的是朴素贝叶斯模型（朴素贝叶斯假设），引入单个隐变量后，发展出了 GMM，如果单个隐变量变成序列的隐变量，就得到了状态空间模型（引入齐次马尔可夫假设和观测独立假设就有HMM，Kalman Filter，Particle Filter），为了引入观测变量之间的关联，引入了一种最大熵模型-MEMM，为了克服 MEMM 中的局域问题，又引入了 CRF，CRF 是一个无向图，其中，破坏了齐次马尔可夫假设，如果隐变量是一个链式结构，那么又叫线性链 CRF。</p>
+<p>在无向图的基础上，引入隐变量得到了玻尔兹曼机，这个图模型的概率密度函数是一个指数族分布。对隐变量和观测变量作出一定的限制，就得到了受限玻尔兹曼机（RBM）。</p>
+<p>我们看到，不同的概率图模型对下面几个特点作出假设：</p>
+<ol>
+<li>方向-边的性质</li>
+<li>离散/连续/混合-点的性质</li>
+<li>条件独立性-边的性质</li>
+<li>隐变量-节点的性质</li>
+<li>指数族-结构特点</li>
+</ol>
+<p>将观测变量和隐变量分别记为 $v,h,h={h_1,\cdots,h_m},v={v_1,\cdots,v_n}$。我们知道，无向图根据最大团的分解，可以写为玻尔兹曼分布的形式 $p(x)=\frac{1}{Z}\prod\limits_{i=1}^K\psi_i(x_{ci})=\frac{1}{Z}\exp(-\sum\limits_{i=1}^KE(x_{ci}))$，这也是一个指数族分布。</p>
+<p>一个玻尔兹曼机存在一系列的问题，在其推断任务中，想要精确推断，是无法进行的，想要近似推断，计算量过大。为了解决这个问题，一种简化的玻尔兹曼机-受限玻尔兹曼机作出了假设，所有隐变量内部以及观测变量内部没有连接，只在隐变量和观测变量之间有连接，这样一来：
+$$
+p(x)=p(h,v)=\frac{1}{Z}\exp(-E(v,h))
+$$
+其中能量函数 $E(v,h)$ 可以写出三个部分，包括与节点集合相关的两项以及与边 $w$ 相关的一项，记为：
+$$
+E(v,h)=-(h^Twv+\alpha^T v+\beta^T h)
+$$
+所以：
+$$
+p(x)=\frac{1}{Z}\exp(h^Twv)\exp(\alpha^T v)\exp(\beta^T h)=\frac{1}{Z}\prod_{i=1}^m\prod_{j=1}^n\exp(h_iw_{ij}v_j)\prod_{j=1}^n\exp(\alpha_jv_j)\prod_{i=1}^m\exp(\beta_ih_i)
+$$
+上面这个式子也和 RBM 的因子图一一对应。</p>
+<h2 id="推断">推断</h2>
+<p>推断任务包括求后验概率 $ p(v|h),p(h|v)$ 以及求边缘概率 $p(v)$。</p>
+<h3 id="phv">$p(h|v)$</h3>
+<p>对于一个无向图，满足局域的 Markov 性质，即 $p(h_1|h-{h_1},v)=p(h_1|Neighbour(h_1))=p(h_1|v)$。我们可以得到：
+$$
+p(h|v)=\prod_{i=1}^mp(h_i|v)
+$$
+考虑 Binary RBM，所有的隐变量只有两个取值 $0,1$：
+$$
+p(h_l=1|v)=\frac{p(h_l=1,h_{-l},v)}{p(h_{-l},v)}=\frac{p(h_l=1,h_{-l},v)}{p(h_l=1,h_{-l},v)+p(h_l=0,h_{-l},v)}
+$$
+将能量函数写成和 $l$ 相关或不相关的两项：
+$$
+E(v,h)=-(\sum\limits_{i=1,i\ne l}^m\sum\limits_{j=1}^nh_iw_{ij}v_j+h_l\sum\limits_{j=1}^nw_{lj}v_j+\sum\limits_{j=1}^n\alpha_j v_j+\sum\limits_{i=1,i\ne l}^m\beta_ih_i+\beta_lh_l)
+$$
+定义：$h_lH_l(v)=h_l\sum\limits_{j=1}^nw_{lj}v_j+\beta_lh_l,\overline{H}(h_{-l},v)=\sum\limits_{i=1,i\ne l}^m\sum\limits_{j=1}^nh_iw_{ij}v_j+\sum\limits_{j=1}^n\alpha_j v_j+\sum\limits_{i=1,i\ne l}^m\beta_ih_i$。</p>
+<p>代入，有：
+$$
+p(h_l=1|v)=\frac{\exp(H_l(v)+\overline{H}(h_{-l},v))}{\exp(H_l(v)+\overline{H}(h_{-l},v))+\exp(\overline{H}(h_{-l},v))}=\frac{1}{1+\exp(-H_l(v))}=\sigma(H_l(v))
+$$
+于是就得到了后验概率。对于 $v$ 的后验是对称的，所以类似的可以求解。</p>
+<h3 id="pv">$p(v)$</h3>
+<p>$$
+\begin{align}p(v)&amp;=\sum\limits_hp(h,v)=\sum\limits_h\frac{1}{Z}\exp(h^Twv+\alpha^Tv+\beta^Th)\nonumber\<br>
+&amp;=\exp(\alpha^Tv)\frac{1}{Z}\sum\limits_{h_1}\exp(h_1w_1v+\beta_1h_1)\cdots\sum\limits_{h_m}\exp(h_mw_mv+\beta_mh_m)\nonumber\<br>
+&amp;=\exp(\alpha^Tv)\frac{1}{Z}(1+\exp(w_1v+\beta_1))\cdots(1+\exp(w_mv+\beta_m))\nonumber\<br>
+&amp;=\frac{1}{Z}\exp(\alpha^Tv+\sum\limits_{i=1}^m\log(1+\exp(w_iv+\beta_i)))
+\end{align}
+$$</p>
+<p>其中，$\log(1+\exp(x))$ 叫做 Softplus 函数。</p>
 
 
                 
@@ -433,11 +401,11 @@ pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.
                 <hr>
                 <ul class="pager">
                     
-                    
-                    <li class="next">
-                        <a href="/post/rbm/" data-toggle="tooltip" data-placement="top" title="受限玻尔兹曼机——介绍&#43;简单推断">Next
-                            Post &rarr;</a>
+                    <li class="previous">
+                        <a href="/post/sklearn-%E6%96%87%E6%9C%AC%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" data-toggle="tooltip" data-placement="top" title="sklearn-文本特征提取">&larr;
+                            Previous Post</a>
                     </li>
+                    
                     
                 </ul>
 
