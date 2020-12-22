@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Yijia Zheng">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://zhengyjzoe.github.io/images/wallpaper2.jpg">
+    <meta property="twitter:image" content="https://zhengyjzoe.github.io/images/wallpaper2.jpg" />
+    
+
+    
+    <meta name="title" content="Faiss使用教程" />
+    <meta property="og:title" content="Faiss使用教程" />
+    <meta property="twitter:title" content="Faiss使用教程" />
+    
+
+    
+    <meta name="description" content="一个通俗易懂的入门小文档">
+    <meta property="og:description" content="一个通俗易懂的入门小文档" />
+    <meta property="twitter:description" content="一个通俗易懂的入门小文档" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Faiss使用教程-郑仪嘉</title>
+
+    <link rel="canonical" href="/post/faiss/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    <link rel="stylesheet" href="https://zhengyjzoe.github.io/css/lightbox.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"><link rel="stylesheet" href="https://zhengyjzoe.github.io/css/main.css">
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+
+
+    
+    
+    <script src="https://zhengyjzoe.github.io/js/lightbox.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script src="https://zhengyjzoe.github.io/js/main.js"></script>
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Yijia Zheng</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                        
+                    
+                    
+		    
+                        <li><a href="/top/cv/">CV</a></li>
+                    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/images/wallpaper2.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>Faiss使用教程</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                Yijia Zheng
+                         
+                        on 
+                        Monday, January 1, 0001
+                        
+                            <span id="/post/faiss/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("", "");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#faiss初级使用文档">Faiss初级使用文档</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="faiss初级使用文档">Faiss初级使用文档</h2>
+<blockquote>
+<p>本文档仅供入门使用，无其他技术知识</p>
+</blockquote>
+<h3 id="介绍">介绍</h3>
+<p>Faiss是Facebook实验室开发的一款使用C++开发，提供python接口的相似度搜索框架。</p>
+<p><a href="https://github.com/facebookresearch/faiss/blob/master/INSTALL.md">官方安装文档：INSTALL file for Faiss</a></p>
+<h3 id="原理">原理</h3>
+<p>Faiss 总体使用过程可以分为三步：</p>
+<ol>
+<li>构建训练数据（以矩阵形式表达）；</li>
+<li>挑选合适的 Index （Faiss 的核心部件），将训练数据 add 进 Index 中；</li>
+<li>Search，也就是搜索，得到最后结果。</li>
+</ol>
+<p>详细解释，即为：首先根据原始向量构建一个索引文件，再根据索引文件进行查询。初次查询前需要进行<code>train</code>和<code>add</code>过程，后续若要进行索引的添加可以再次使用<code>add</code>添加索引。</p>
+<p>
+  <img src="https://blog.razrlele.com/wp-content/uploads/2019/05/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7-2019-05-07-22.54.24.png" alt="img">
+
+具体过程实现的核心原理：</p>
+<ol>
+<li>Product Quantizer(PQ)</li>
+<li>Inverted File System(IVF)</li>
+</ol>
+<p><strong>Product Quantizer</strong></p>
+<p>PQ乘积量化的核心思想还是聚类，或者说具体应用到ANN近似最近邻搜索上，K-Means是PQ乘积量化子空间数目为1的特例。PQ乘积量化生成码本和量化的过程可以用如下图示来说明：</p>
+<p>在训练阶段，针对N个训练样本，假设样本维度为128维，我们将其切分为4个子空间，则每一个子空间的维度为32维，然后我们在每一个子空间中，对子向量采用K-Means对其进行聚类(图中示意聚成256类)，这样每一个子空间都能得到一个码本。这样训练样本的每个子段，都可以用子空间的聚类中心来近似，对应的编码即为类中心的ID。如图所示，通过这样一种编码方式，训练样本仅使用的很短的一个编码得以表示，从而达到量化的目的。对于待编码的样本，将它进行相同的切分，然后在各个子空间里逐一找到距离它们最近的类中心，然后用类中心的id来表示它们，即完成了待编码样本的编码。</p>
+<p>
+  <img src="https://yongyuan.name/imgs/posts/pq.png" alt="img">
+
+</p>
+<p>在查询阶段，PQ同样在计算查询样本与dataset中各个样本的距离，只不过这种距离的计算转化为间接近似的方法而获得。PQ乘积量化方法在计算距离的时候，有两种距离计算方式，一种是对称距离，另外一种是非对称距离。非对称距离的损失小(也就是更接近真实距离)，实际中也经常采用这种距离计算方式。下面过程示意的是查询样本来到时，以非对称距离的方式(红框标识出来的部分)计算到dataset样本间的计算示意：</p>
+<p>
+  <img src="https://yongyuan.name/imgs/posts/pq_search.png" alt="img">
+
+</p>
+<p>查询向量来到时，按训练样本生成码本的过程，将其同样分成相同的子段，然后在每个子空间中，计算子段到该子空间中所有聚类中心得距离，如图中所示，可以得到4*256个距离并存储。在计算库中某个样本到查询向量的距离时，比如编码为(124, 56, 132, 222)这个样本到查询向量的距离时，我们分别到距离池中取各个子段对应的距离即可，比如编码为124这个子段，在第1个算出的256个距离里面把编号为124的那个距离取出来就可，所有子段对应的距离取出来后，将这些子段的距离求和相加，即得到该样本到查询样本间的非对称距离。所有距离算好后，排序后即得到我们最终想要的结果。</p>
+<p><strong>Inverted File System</strong></p>
+<p>上述方法仅仅解决了向量距离计算过程，但是本质上还是需要和库里的每个向量都进行距离运算，所以还要用到另一个关键技术<em>Inverted File System</em>。其原理就是对库里所有向量做K-means Clustering。</p>
+<p>在实践中通常会使用到以上两个原理</p>
+<hr>
+<h3 id="实践示例">实践示例</h3>
+<h4 id="简单的示例">简单的示例</h4>
+<p><strong>构建训练数据</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">import</span> numpy <span style="color:#ff79c6">as</span> np
+d <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">64</span>                           <span style="color:#6272a4"># 维度</span>
+nb <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">100000</span>                      <span style="color:#6272a4"># 训练数据库大小</span>
+nq <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">10000</span>                       <span style="color:#6272a4"># 查询向量个数</span>
+np<span style="color:#ff79c6">.</span>random<span style="color:#ff79c6">.</span>seed(<span style="color:#bd93f9">1234</span>)
+xb <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>random<span style="color:#ff79c6">.</span>random((nb, d))<span style="color:#ff79c6">.</span>astype(<span style="color:#f1fa8c">&#39;float32&#39;</span>) <span style="color:#6272a4">#数据库向量</span>
+xb[:, <span style="color:#bd93f9">0</span>] <span style="color:#ff79c6">+=</span> np<span style="color:#ff79c6">.</span>arange(nb) <span style="color:#ff79c6">/</span> <span style="color:#bd93f9">1000.</span>
+xq <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>random<span style="color:#ff79c6">.</span>random((nq, d))<span style="color:#ff79c6">.</span>astype(<span style="color:#f1fa8c">&#39;float32&#39;</span>) <span style="color:#6272a4">#查询向量</span>
+xq[:, <span style="color:#bd93f9">0</span>] <span style="color:#ff79c6">+=</span> np<span style="color:#ff79c6">.</span>arange(nq) <span style="color:#ff79c6">/</span> <span style="color:#bd93f9">1000.</span>
+</code></pre></div><p>上面的代码，生成了训练数据矩阵 xd ，以及查询数据矩阵 xq。</p>
+<p>Just for fun，分别在 xd 和 xq 所有数据的第一个维度中添加了一个偏移量，并且偏移量随着 id 数字的增大而增大。</p>
+<p><strong>创建index对象并add数据库数据</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">import</span> faiss                   <span style="color:#6272a4"># make faiss available</span>
+index <span style="color:#ff79c6">=</span> faiss<span style="color:#ff79c6">.</span>IndexFlatL2(d)   <span style="color:#6272a4"># 创建index</span>
+<span style="color:#ff79c6">print</span>(index<span style="color:#ff79c6">.</span>is_trained)
+index<span style="color:#ff79c6">.</span>add(xb)                  <span style="color:#6272a4"># 将数据库向量add index</span>
+<span style="color:#ff79c6">print</span>(index<span style="color:#ff79c6">.</span>ntotal)
+
+Output:
+  True
+<span style="color:#bd93f9">100000</span>
+</code></pre></div><p>Faiss 是围绕 Index 对象构建的。 Faiss 也提供了许多种类的 Index， 这里简单起见，使用 <strong>IndexFlatL2</strong>： 一个蛮力L2距离搜索的索引。</p>
+<p>所有索引都需要知道它们是何时构建的，它们运行的向量维数是多少（在我们的例子中是d）。 然后，大多数索引还需要训练阶段（training phase），以分析向量的分布。 对于IndexFlatL2，我们可以跳过此操作。</p>
+<p><strong>查询</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">k <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>                          <span style="color:#6272a4"># 查看数据库中最邻近的4个向量</span>
+D, I <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">.</span>search(xb[:<span style="color:#bd93f9">5</span>], k) <span style="color:#6272a4"># 直接查找数据库中的向量，验证模型</span>
+<span style="color:#ff79c6">print</span>(I)
+<span style="color:#ff79c6">print</span>(D)
+D, I <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">.</span>search(xq, k)     <span style="color:#6272a4"># 查询</span>
+<span style="color:#ff79c6">print</span>(I[:<span style="color:#bd93f9">5</span>])                   
+<span style="color:#ff79c6">print</span>(I[<span style="color:#ff79c6">-</span><span style="color:#bd93f9">5</span>:])                  
+
+Output:
+<span style="color:#6272a4">#ID矩阵：最近的四个向量的ID</span>
+  [[  <span style="color:#bd93f9">0</span> <span style="color:#bd93f9">393</span> <span style="color:#bd93f9">363</span>  <span style="color:#bd93f9">78</span>]
+ [  <span style="color:#bd93f9">1</span> <span style="color:#bd93f9">555</span> <span style="color:#bd93f9">277</span> <span style="color:#bd93f9">364</span>]
+ [  <span style="color:#bd93f9">2</span> <span style="color:#bd93f9">304</span> <span style="color:#bd93f9">101</span>  <span style="color:#bd93f9">13</span>]
+ [  <span style="color:#bd93f9">3</span> <span style="color:#bd93f9">173</span>  <span style="color:#bd93f9">18</span> <span style="color:#bd93f9">182</span>]
+ [  <span style="color:#bd93f9">4</span> <span style="color:#bd93f9">288</span> <span style="color:#bd93f9">370</span> <span style="color:#bd93f9">531</span>]]
+<span style="color:#6272a4">#距离矩阵：最近的四个向量到查询向量的距离</span>
+[[<span style="color:#bd93f9">0.</span>        <span style="color:#bd93f9">7.1751733</span> <span style="color:#bd93f9">7.207629</span>  <span style="color:#bd93f9">7.2511625</span>]
+ [<span style="color:#bd93f9">0.</span>        <span style="color:#bd93f9">6.3235645</span> <span style="color:#bd93f9">6.684581</span>  <span style="color:#bd93f9">6.7999454</span>]
+ [<span style="color:#bd93f9">0.</span>        <span style="color:#bd93f9">5.7964087</span> <span style="color:#bd93f9">6.391736</span>  <span style="color:#bd93f9">7.2815123</span>]
+ [<span style="color:#bd93f9">0.</span>        <span style="color:#bd93f9">7.2779055</span> <span style="color:#bd93f9">7.5279865</span> <span style="color:#bd93f9">7.6628466</span>]
+ [<span style="color:#bd93f9">0.</span>        <span style="color:#bd93f9">6.7638035</span> <span style="color:#bd93f9">7.2951202</span> <span style="color:#bd93f9">7.3688145</span>]]
+<span style="color:#6272a4"># 查询ID结果</span>
+[[ <span style="color:#bd93f9">381</span>  <span style="color:#bd93f9">207</span>  <span style="color:#bd93f9">210</span>  <span style="color:#bd93f9">477</span>]
+ [ <span style="color:#bd93f9">526</span>  <span style="color:#bd93f9">911</span>  <span style="color:#bd93f9">142</span>   <span style="color:#bd93f9">72</span>]
+ [ <span style="color:#bd93f9">838</span>  <span style="color:#bd93f9">527</span> <span style="color:#bd93f9">1290</span>  <span style="color:#bd93f9">425</span>]
+ [ <span style="color:#bd93f9">196</span>  <span style="color:#bd93f9">184</span>  <span style="color:#bd93f9">164</span>  <span style="color:#bd93f9">359</span>]
+ [ <span style="color:#bd93f9">526</span>  <span style="color:#bd93f9">377</span>  <span style="color:#bd93f9">120</span>  <span style="color:#bd93f9">425</span>]]
+[[ <span style="color:#bd93f9">9900</span> <span style="color:#bd93f9">10500</span>  <span style="color:#bd93f9">9309</span>  <span style="color:#bd93f9">9831</span>]
+ [<span style="color:#bd93f9">11055</span> <span style="color:#bd93f9">10895</span> <span style="color:#bd93f9">10812</span> <span style="color:#bd93f9">11321</span>]
+ [<span style="color:#bd93f9">11353</span> <span style="color:#bd93f9">11103</span> <span style="color:#bd93f9">10164</span>  <span style="color:#bd93f9">9787</span>]
+ [<span style="color:#bd93f9">10571</span> <span style="color:#bd93f9">10664</span> <span style="color:#bd93f9">10632</span>  <span style="color:#bd93f9">9638</span>]
+ [ <span style="color:#bd93f9">9628</span>  <span style="color:#bd93f9">9554</span> <span style="color:#bd93f9">10036</span>  <span style="color:#bd93f9">9582</span>]]
+</code></pre></div><h4 id="优化">优化</h4>
+<p>上面已经介绍了原理，为达到不同目的使用的不同种类的Index见下图：</p>
+<p>
+  <img src="https://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225820995-299814548.png" alt="img">
+
+</p>
+<p><strong>加速</strong></p>
+<p>为了加快搜索速度，我们可以按照一定规则或者顺序将数据集分段。 我们可以在 d 维空间中定义 Voronoi 单元，并且每个数据库向量都会落在其中一个单元。 在搜索时，查询向量 x， 可以经过计算，算出它会落在哪个单元格中。 然后我们只需要在这个单元格以及与它相邻的一些单元格中，进行与查询向量 x 的比较工作就可以了。</p>
+<p>这里使用<code>IndexIVFFlat</code> 作为索引。使用加速的索引需要进行训练，一般使用数据库向量本身。<code>IndexIVFFlat</code> 同时需要另外一个 Index：<code> quantizer</code>， 来给 Voronoi 单元格分配向量。 每个单元格由质心（centroid）定义。 找某个向量落在哪个 Voronoi 单元格的任务，就是一个在质心集合中找这个向量最近邻居的任务。 这是另一个索引的任务，通常是 <code>IndexFlatL2</code>。</p>
+<p>这里搜索方法有两个参数：<code>nlist</code>（单元格数量），<code>nprobe </code>（一次搜索可以访问的单元格数量，默认为1，当为nlist时即为暴力搜索）。 搜索时间大致随着 <code>nprobe</code> 的值加上一些由于量化产生的常数，进行线性增长。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">nlist <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">100</span>
+k <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>
+quantizer <span style="color:#ff79c6">=</span> faiss<span style="color:#ff79c6">.</span>IndexFlatL2(d)  <span style="color:#6272a4"># 另一个索引</span>
+index <span style="color:#ff79c6">=</span> faiss<span style="color:#ff79c6">.</span>IndexIVFFlat(quantizer, d, nlist)
+<span style="color:#ff79c6">assert</span> <span style="color:#ff79c6">not</span> index<span style="color:#ff79c6">.</span>is_trained
+index<span style="color:#ff79c6">.</span>train(xb)
+<span style="color:#ff79c6">assert</span> index<span style="color:#ff79c6">.</span>is_trained
+
+index<span style="color:#ff79c6">.</span>add(xb)                  
+D, I <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">.</span>search(xq, k)     
+<span style="color:#ff79c6">print</span>(I[<span style="color:#ff79c6">-</span><span style="color:#bd93f9">5</span>:])                  
+index<span style="color:#ff79c6">.</span>nprobe <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">10</span>              <span style="color:#6272a4"># nprobe默认为1，可以进行修改</span>
+D, I <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">.</span>search(xq, k)
+<span style="color:#ff79c6">print</span>(I[<span style="color:#ff79c6">-</span><span style="color:#bd93f9">5</span>:]) 
+
+Output:
+<span style="color:#6272a4"># nprobe = 1</span>
+[[ <span style="color:#bd93f9">9900</span> <span style="color:#bd93f9">10500</span>  <span style="color:#bd93f9">9831</span> <span style="color:#bd93f9">10808</span>]
+ [<span style="color:#bd93f9">11055</span> <span style="color:#bd93f9">10812</span> <span style="color:#bd93f9">11321</span> <span style="color:#bd93f9">10260</span>]
+ [<span style="color:#bd93f9">11353</span> <span style="color:#bd93f9">10164</span> <span style="color:#bd93f9">10719</span> <span style="color:#bd93f9">11013</span>]
+ [<span style="color:#bd93f9">10571</span> <span style="color:#bd93f9">10203</span> <span style="color:#bd93f9">10793</span> <span style="color:#bd93f9">10952</span>]
+ [ <span style="color:#bd93f9">9582</span> <span style="color:#bd93f9">10304</span>  <span style="color:#bd93f9">9622</span>  <span style="color:#bd93f9">9229</span>]]
+<span style="color:#6272a4"># nprobe = 10</span>
+[[ <span style="color:#bd93f9">9900</span> <span style="color:#bd93f9">10500</span>  <span style="color:#bd93f9">9831</span> <span style="color:#bd93f9">10808</span>]
+ [<span style="color:#bd93f9">11055</span> <span style="color:#bd93f9">10812</span> <span style="color:#bd93f9">11321</span> <span style="color:#bd93f9">10260</span>]
+ [<span style="color:#bd93f9">11353</span> <span style="color:#bd93f9">10164</span> <span style="color:#bd93f9">10719</span> <span style="color:#bd93f9">11013</span>]
+ [<span style="color:#bd93f9">10571</span> <span style="color:#bd93f9">10203</span> <span style="color:#bd93f9">10793</span> <span style="color:#bd93f9">10952</span>]
+ [ <span style="color:#bd93f9">9582</span> <span style="color:#bd93f9">10304</span>  <span style="color:#bd93f9">9622</span>  <span style="color:#bd93f9">9229</span>]]
+</code></pre></div><p><strong>减少内存</strong></p>
+<p><code>IndexFlatL2 </code>和<code> IndexIVFFlat</code> 都会存储所有的向量。 为了扩展到非常大的数据集，Faiss提供了一些变体，它们使用product quantizer压缩存储的矢量并进行有损压缩。</p>
+<p>此处使用<code>IndexIVFPQ</code>，矢量仍然存储在Voronoi单元中，但是它们的大小减小到可配置的字节数m（d必须是m的倍数）。在这种情况下，由于矢量未精确存储，因此搜索方法返回的距离也是近似值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">nlist <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">100</span>
+m <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">8</span>                             <span style="color:#6272a4"># 每个向量的字节数</span>
+k <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>
+quantizer <span style="color:#ff79c6">=</span> faiss<span style="color:#ff79c6">.</span>IndexFlatL2(d)  
+index <span style="color:#ff79c6">=</span> faiss<span style="color:#ff79c6">.</span>IndexIVFPQ(quantizer, d, nlist, m, <span style="color:#bd93f9">8</span>)
+                                    <span style="color:#6272a4"># 这里的8表示每个子向量占8字节</span>
+index<span style="color:#ff79c6">.</span>train(xb)
+index<span style="color:#ff79c6">.</span>add(xb)
+D, I <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">.</span>search(xb[:<span style="color:#bd93f9">5</span>], k) 
+<span style="color:#ff79c6">print</span>(I)
+<span style="color:#ff79c6">print</span>(D)
+index<span style="color:#ff79c6">.</span>nprobe <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">10</span>              
+D, I <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">.</span>search(xq, k)     
+<span style="color:#ff79c6">print</span>(I[<span style="color:#ff79c6">-</span><span style="color:#bd93f9">5</span>:])
+
+Output:
+[[   <span style="color:#bd93f9">0</span>  <span style="color:#bd93f9">608</span>  <span style="color:#bd93f9">220</span>  <span style="color:#bd93f9">228</span>]
+ [   <span style="color:#bd93f9">1</span> <span style="color:#bd93f9">1063</span>  <span style="color:#bd93f9">277</span>  <span style="color:#bd93f9">617</span>]
+ [   <span style="color:#bd93f9">2</span>   <span style="color:#bd93f9">46</span>  <span style="color:#bd93f9">114</span>  <span style="color:#bd93f9">304</span>]
+ [   <span style="color:#bd93f9">3</span>  <span style="color:#bd93f9">791</span>  <span style="color:#bd93f9">527</span>  <span style="color:#bd93f9">316</span>]
+ [   <span style="color:#bd93f9">4</span>  <span style="color:#bd93f9">159</span>  <span style="color:#bd93f9">288</span>  <span style="color:#bd93f9">393</span>]]
+
+[[ <span style="color:#bd93f9">1.40704751</span>  <span style="color:#bd93f9">6.19361687</span>  <span style="color:#bd93f9">6.34912491</span>  <span style="color:#bd93f9">6.35771513</span>]
+ [ <span style="color:#bd93f9">1.49901485</span>  <span style="color:#bd93f9">5.66632462</span>  <span style="color:#bd93f9">5.94188499</span>  <span style="color:#bd93f9">6.29570007</span>]
+ [ <span style="color:#bd93f9">1.63260388</span>  <span style="color:#bd93f9">6.04126883</span>  <span style="color:#bd93f9">6.18447495</span>  <span style="color:#bd93f9">6.26815748</span>]
+ [ <span style="color:#bd93f9">1.5356375</span>   <span style="color:#bd93f9">6.33165455</span>  <span style="color:#bd93f9">6.64519501</span>  <span style="color:#bd93f9">6.86594009</span>]
+ [ <span style="color:#bd93f9">1.46203303</span>  <span style="color:#bd93f9">6.5022912</span>   <span style="color:#bd93f9">6.62621975</span>  <span style="color:#bd93f9">6.63154221</span>]]
+
+[[ <span style="color:#bd93f9">9432</span>  <span style="color:#bd93f9">9649</span>  <span style="color:#bd93f9">9900</span> <span style="color:#bd93f9">10287</span>]
+ [<span style="color:#bd93f9">10229</span> <span style="color:#bd93f9">10403</span>  <span style="color:#bd93f9">9829</span>  <span style="color:#bd93f9">9740</span>]
+ [<span style="color:#bd93f9">10847</span> <span style="color:#bd93f9">10824</span>  <span style="color:#bd93f9">9787</span> <span style="color:#bd93f9">10089</span>]
+ [<span style="color:#bd93f9">11268</span> <span style="color:#bd93f9">10935</span> <span style="color:#bd93f9">10260</span> <span style="color:#bd93f9">10571</span>]
+ [ <span style="color:#bd93f9">9582</span> <span style="color:#bd93f9">10304</span>  <span style="color:#bd93f9">9616</span>  <span style="color:#bd93f9">9850</span>]]
+</code></pre></div><p>我们可以观察到我们正确找到了最近邻居（它是矢量ID本身），但是矢量与其自身的估计距离不是0，尽管它明显低于到其他邻居的距离。 这是由于有损压缩造成的。</p>
+<p><strong>index_factory</strong></p>
+<p><code>Index_factory</code>是一个简化索引的方法，通过字符串来创建索引，字符串包括三部分：预处理、倒排、编码。
+预处理支持：</p>
+<ul>
+<li>PCA：PCA64表示通过PCA降维到64维（PCAMatrix实现）;PCAR64表示PCA后添加一个随机旋转。</li>
+<li>OPQ：OPQ16表示为数据集进行16字节编码进行预处理（OPQMatrix实现），对PQ索引很有效但是训练时也会慢一些。</li>
+</ul>
+<p>倒排支持：</p>
+<ul>
+<li>IVF：IVF4096表示使用粗量化器IndexFlatL2将数据分为4096份</li>
+<li>IMI：IMI2x8表示通过Mutil-index使用2x8个bits（MultiIndexQuantizer）建立2^(2*8)份的倒排索引。</li>
+<li>IDMap：如果不使用倒排但需要add_with_ids，可以通过IndexIDMap来添加id</li>
+</ul>
+<p>编码支持：</p>
+<ul>
+<li>Flat：存储原始向量，通过IndexFlat或IndexIVFFlat实现</li>
+<li>PQ：PQ16使用16个字节编码向量，通过IndexPQ或IndexIVFPQ实现</li>
+<li>PQ8+16：表示通过8字节来进行PQ，16个字节对第一级别量化的误差再做PQ，通过IndexIVFPQR实现</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">index <span style="color:#ff79c6">=</span> faiss<span style="color:#ff79c6">.</span>index_factory(d, <span style="color:#f1fa8c">&#34;PCA32,IVF100,Flat&#34;</span>)
+</code></pre></div><p>表示使用PCA投影将矢量减少到32D的预处理，具体参数表示见<a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">The index factory</a>.</p>
+<h3 id="进一步">进一步</h3>
+<h4 id="索引选择">索引选择</h4>
+<p><strong>如果向量数量位于1百万-1千万之间：”…,IMI2x10,…”</strong></p>
+<p>（这里x是文字x，而不是数字）</p>
+<p>IMI在训练向量上执行具有2^10个质心的 k-means，但它在向量的前半部分和后半部分独立地执行。 这将簇的数量增加到 2^(2 * 10)。您将需要大约64 * 2 ^ 10个向量进行训练。</p>
+<p><em>是否支持 GPU</em>： no</p>
+<p><strong>如果向量数量位于1千万-1亿之间：”…,IMI2x12,…”</strong></p>
+<p>与上面相同，将10替换为12。</p>
+<p><em>是否支持 GPU</em>： no</p>
+<p><strong>如果向量数量位于1亿-10亿之间：”…,IMI2x14,…”</strong></p>
+<p>与上面相同，将10替换为14。</p>
+<p><em>是否支持 GPU</em>： no</p>
+<h4 id="特殊索引操作仅支持部分类型索引">特殊索引操作(仅支持部分类型索引)</h4>
+<p><strong>从索引重建向量</strong>：<code>reconstruct</code>(单个) 和<code> reconstruct_n</code> (多个)从给定其ID的索引重建向量。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">d <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>
+n_data <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">10</span>
+data <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>random<span style="color:#ff79c6">.</span>rand(n_data, d)<span style="color:#ff79c6">.</span>astype(<span style="color:#f1fa8c">&#39;float32&#39;</span>)
+<span style="color:#ff79c6">print</span>(data)
+index <span style="color:#ff79c6">=</span> faiss<span style="color:#ff79c6">.</span>IndexFlatL2(d)
+index<span style="color:#ff79c6">.</span>add(data)
+re_data <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">.</span>reconstruct(<span style="color:#bd93f9">0</span>)  <span style="color:#6272a4">#指定需要恢复的向量的id,每次只能恢复一个向量</span>
+<span style="color:#ff79c6">print</span>(re_data)
+re_data_n <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">.</span>reconstruct_n(<span style="color:#bd93f9">0</span>, <span style="color:#bd93f9">9</span>) <span style="color:#6272a4">#从第0个向量开始，连续取9个</span>
+<span style="color:#ff79c6">print</span>(re_data_n<span style="color:#ff79c6">.</span>shape)
+
+Output:
+[[<span style="color:#bd93f9">0.72026837</span> <span style="color:#bd93f9">0.87849116</span> <span style="color:#bd93f9">0.2474201</span>  <span style="color:#bd93f9">0.08623981</span>]
+ [<span style="color:#bd93f9">0.91972834</span> <span style="color:#bd93f9">0.82349646</span> <span style="color:#bd93f9">0.27996686</span> <span style="color:#bd93f9">0.6142346</span> ]
+ [<span style="color:#bd93f9">0.40075094</span> <span style="color:#bd93f9">0.40267867</span> <span style="color:#bd93f9">0.62194383</span> <span style="color:#bd93f9">0.11366329</span>]
+ [<span style="color:#bd93f9">0.73913276</span> <span style="color:#bd93f9">0.38996422</span> <span style="color:#bd93f9">0.51848</span>    <span style="color:#bd93f9">0.11875122</span>]
+ [<span style="color:#bd93f9">0.12231669</span> <span style="color:#bd93f9">0.7380644</span>  <span style="color:#bd93f9">0.81036794</span> <span style="color:#bd93f9">0.13544181</span>]
+ [<span style="color:#bd93f9">0.5784965</span>  <span style="color:#bd93f9">0.6975786</span>  <span style="color:#bd93f9">0.29246163</span> <span style="color:#bd93f9">0.27574492</span>]
+ [<span style="color:#bd93f9">0.47876573</span> <span style="color:#bd93f9">0.33619544</span> <span style="color:#bd93f9">0.32216823</span> <span style="color:#bd93f9">0.7398522</span> ]
+ [<span style="color:#bd93f9">0.30921793</span> <span style="color:#bd93f9">0.49735087</span> <span style="color:#bd93f9">0.59424734</span> <span style="color:#bd93f9">0.24407849</span>]
+ [<span style="color:#bd93f9">0.8088956</span>  <span style="color:#bd93f9">0.20136766</span> <span style="color:#bd93f9">0.13435994</span> <span style="color:#bd93f9">0.64839953</span>]
+ [<span style="color:#bd93f9">0.6554848</span>  <span style="color:#bd93f9">0.5679234</span>  <span style="color:#bd93f9">0.78399867</span> <span style="color:#bd93f9">0.67035073</span>]]
+
+[<span style="color:#bd93f9">0.72026837</span> <span style="color:#bd93f9">0.87849116</span> <span style="color:#bd93f9">0.2474201</span>  <span style="color:#bd93f9">0.08623981</span>]
+(<span style="color:#bd93f9">9</span>, <span style="color:#bd93f9">4</span>)
+</code></pre></div><p><strong>从索引中删除元素</strong>：<code>remove_ids</code> 方法从索引中删除向量子集。 它需要为索引中的每个元素调用一个<code> IDSelector</code> 对象来决定是否应该删除它。 <code>IDSelectorBatch</code>将为索引列表执行此操作。 Python接口有效地构建了这个。注意，由于它对整个数据库进行了传递，因此只有在需要删除大量向量时才有效。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">index <span style="color:#ff79c6">=</span> faiss<span style="color:#ff79c6">.</span>IndexFlatL2(d)
+index<span style="color:#ff79c6">.</span>add(data)
+<span style="color:#ff79c6">print</span>(index<span style="color:#ff79c6">.</span>ntotal)
+index<span style="color:#ff79c6">.</span>remove_ids(np<span style="color:#ff79c6">.</span>arange(<span style="color:#bd93f9">5</span>)) <span style="color:#6272a4"># 需要移除的向量的id</span>
+<span style="color:#ff79c6">print</span>(index<span style="color:#ff79c6">.</span>ntotal)  <span style="color:#6272a4">#移除了5个向量，还剩5个</span>
+
+Output:
+<span style="color:#bd93f9">10</span>
+<span style="color:#bd93f9">5</span>
+</code></pre></div><p><strong>范围搜索</strong>：方法<code>range_search</code>返回查询点周围半径内的所有向量（而不是k最近的向量）。 由于每个查询的结果列表大小不同，因此必须特别处理：在 Python 中，结果以一个一维数组 lims, D, I 的元组形式返回。 搜索 i 的结果在 <code>I[lims[i]:lims[i+1]], D[lims[i]:lims[i+1]] </code>。</p>
+<p><strong>拆分和合并索引</strong>：</p>
+<ul>
+<li><code>merge_from</code> 将另一个索引复制到此并在运行时解除分配。 可以将<code> ivflib::merge_into</code> 用于包含在预转换中的<code>IndexIVF</code>。</li>
+<li><code>copy_subset_to</code> 将此代码的子集复制到另一个索引。</li>
+</ul>
+<h4 id="文件读写">文件读写</h4>
+<p>可以使用如下方法将索引保存为文件：</p>
+<pre><code>faiss.write_index(index, &quot;large_index&quot;)
+</code></pre><p>需要使用时，使用以下方法读取文件建立索引：</p>
+<pre><code>index = faiss.read_index(&quot;large_index&quot;)
+</code></pre><p><strong>References</strong></p>
+<p><a href="https://yongyuan.name/blog/ann-search.html">ANN Search</a></p>
+<p><a href="https://github.com/facebookresearch/faiss/wiki">Faiss 官方 Tutorial</a></p>
+<p><a href="https://waltyou.github.io/Faiss-Introduce/">Faiss 介绍</a></p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/post/sklearn-%E6%96%87%E6%9C%AC%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" data-toggle="tooltip" data-placement="top" title="sklearn-文本特征提取">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:zhengyjzoe@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/zhengyjzoe">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/yijia-zheng-6a9636172/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Yijia Zheng 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

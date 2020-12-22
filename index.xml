@@ -38,5 +38,14 @@
       <description>sklearn-文本特征提取 模块 sklearn.feature_extraction 可用于提取符合机器学习算法支持的特征 CountVectorizer 计算机编码文本思路 对文本编码，就是让词语与数字对应起来，建立基于给定</description>
     </item>
     
+    <item>
+      <title>Faiss使用教程</title>
+      <link>https://zhengyjzoe.github.io/post/faiss/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://zhengyjzoe.github.io/post/faiss/</guid>
+      <description>Faiss初级使用文档 本文档仅供入门使用，无其他技术知识 介绍 Faiss是Facebook实验室开发的一款使用C++开发，提供python接口</description>
+    </item>
+    
   </channel>
 </rss>
