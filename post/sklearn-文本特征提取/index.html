@@ -334,36 +334,32 @@ $(function() {
                 <header>
                     <h2>TOC</h2>
                 </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#sklearn-文本特征提取">sklearn-文本特征提取</a></li>
-        <li><a href="#countvectorizer">CountVectorizer</a></li>
-        <li><a href="#tfidfvectorizer--tfidftransformer">TfidfVectorizer &amp; TfidfTransformer</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
                 
-                <h2 id="sklearn-文本特征提取">sklearn-文本特征提取</h2>
+                
+                <h2 id="sklearn文本特征提取">sklearn-文本特征提取</h2>
+
 <blockquote>
 <p>模块 <a href="https://sklearn.apachecn.org/docs/master/classes.html#module-sklearn.feature_extraction"><code>sklearn.feature_extraction</code></a> 可用于提取符合机器学习算法支持的特征</p>
 </blockquote>
+
 <h2 id="countvectorizer">CountVectorizer</h2>
+
 <p>计算机编码文本思路</p>
+
 <ul>
 <li>对文本编码，就是让词语与数字对应起来，建立基于给定文本的词典。（fit方法 ）</li>
 <li>再根据词典对所有的文本数据进行转码。（transform方法）</li>
 </ul>
+
 <p>首先给出一个语料（<em>list</em>结构）</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">corpus <span style="color:#ff79c6">=</span> [
     <span style="color:#f1fa8c">&#39;This is the first document.&#39;</span>,
     <span style="color:#f1fa8c">&#39;This document is the second document.&#39;</span>,
     <span style="color:#f1fa8c">&#39;And this is the third one.&#39;</span>,
     <span style="color:#f1fa8c">&#39;Is this the first document?&#39;</span>,
-]
-</code></pre></div><p>根据上述思路对文本进行编码</p>
+]</code></pre></div>
+<p>根据上述思路对文本进行编码</p>
+
 <p>利用给定的语料<em>corpus</em>生成词典，使用方法<em>get_feature_names</em>查看所有特征词</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> CountVectorizer
 vectorize <span style="color:#ff79c6">=</span> CountVectorizer()
@@ -371,8 +367,9 @@ vectorize<span style="color:#ff79c6">.</span>fit(corpus)
 vectorize<span style="color:#ff79c6">.</span>get_feature_names()
 
 Output：
-[<span style="color:#f1fa8c">&#39;and&#39;</span>, <span style="color:#f1fa8c">&#39;document&#39;</span>, <span style="color:#f1fa8c">&#39;first&#39;</span>, <span style="color:#f1fa8c">&#39;is&#39;</span>, <span style="color:#f1fa8c">&#39;one&#39;</span>, <span style="color:#f1fa8c">&#39;second&#39;</span>, <span style="color:#f1fa8c">&#39;the&#39;</span>, <span style="color:#f1fa8c">&#39;third&#39;</span>, <span style="color:#f1fa8c">&#39;this&#39;</span>]
-</code></pre></div><p>这里，特征集（get_feature——name）返回的结果，有要注意的事情：</p>
+[<span style="color:#f1fa8c">&#39;and&#39;</span>, <span style="color:#f1fa8c">&#39;document&#39;</span>, <span style="color:#f1fa8c">&#39;first&#39;</span>, <span style="color:#f1fa8c">&#39;is&#39;</span>, <span style="color:#f1fa8c">&#39;one&#39;</span>, <span style="color:#f1fa8c">&#39;second&#39;</span>, <span style="color:#f1fa8c">&#39;the&#39;</span>, <span style="color:#f1fa8c">&#39;third&#39;</span>, <span style="color:#f1fa8c">&#39;this&#39;</span>]</code></pre></div>
+<p>这里，特征集（get_feature——name）返回的结果，有要注意的事情：</p>
+
 <ul>
 <li>所有的单词都是小写</li>
 <li>单词长度小于两个字母的，会被剔除掉</li>
@@ -380,37 +377,53 @@ Output：
 <li>不重复</li>
 <li>这个特征集是有顺序的</li>
 </ul>
+
 <p>接下来会按照这个顺序去编码文本数据，这里会出现一个新概念<strong>文档-词频矩阵（document-term matrix）</strong>，英文简写为dtm。我们让机器挖掘文本中的规律时，喂给机器的数据就是 这<strong>文档-词频矩阵（document-term matrix）</strong>。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>transform(corpus)
 
 Output:
 <span style="color:#ff79c6">&lt;</span><span style="color:#bd93f9">4</span>x9 sparse matrix of <span style="color:#8be9fd;font-style:italic">type</span> <span style="color:#f1fa8c">&#39;&lt;class &#39;</span>numpy<span style="color:#ff79c6">.</span>int64<span style="color:#f1fa8c">&#39;&gt;&#39;</span>
-	<span style="color:#ff79c6">with</span> <span style="color:#bd93f9">21</span> stored elements <span style="color:#ff79c6">in</span> Compressed Sparse Row format<span style="color:#ff79c6">&gt;</span>
-</code></pre></div><p>可以看到这是一个（4*9）的矩阵，为了更直观地展示数据，使用pandas将其表现出来</p>
+	<span style="color:#ff79c6">with</span> <span style="color:#bd93f9">21</span> stored elements <span style="color:#ff79c6">in</span> Compressed Sparse Row format<span style="color:#ff79c6">&gt;</span></code></pre></div>
+<p>可以看到这是一个（4*9）的矩阵，为了更直观地展示数据，使用pandas将其表现出来</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">import</span> pandas <span style="color:#ff79c6">as</span> pd
-pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>get_feature_names())
-</code></pre></div><p>表中的每一行代表一个文档（即一个<em>sample</em>），列表示特征词，单元格中是该文档对应特征词的词频。</p>
+pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>get_feature_names())</code></pre></div>
+<p>表中的每一行代表一个文档（即一个<em>sample</em>），列表示特征词，单元格中是该文档对应特征词的词频。</p>
+
 <p>这里需要注意一点，<em>transform</em>的语料中无法编码<em>fit</em>生成的字典中不包含的特征词，这里举一个例子：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">new_corpus <span style="color:#ff79c6">=</span> [<span style="color:#f1fa8c">&#39;I think this document is good&#39;</span>]
 new_dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>transform(new_corpus)
-pd<span style="color:#ff79c6">.</span>DataFrame(new_dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
-</code></pre></div><p>这里只解析了拟合vectorize时所包含的词（corpus中包含的词），[I, think, good]没有显示</p>
+pd<span style="color:#ff79c6">.</span>DataFrame(new_dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())</code></pre></div>
+<p>这里只解析了拟合vectorize时所包含的词（corpus中包含的词），[I, think, good]没有显示</p>
+
 <p>我们机器学习所用的数据，一般被分成训练集和测试集。训练集是为了让机器学习数据的规律，测试集是为了验证规律的有效性。训练集本质上代表的是过去及现在已知的数据，测试集本质上代表的是未来的未知数据（现在不存在的数据），我们是用已知的数据预测未来。所以我们只能让fit方法操作于训练集，构建基于过去或已知数据的特征集。</p>
+
 <h3 id="使用停用词">使用停用词</h3>
+
 <p>停止词是像“and”、“the”、“him”这样的词，这些词在表示文本内容时被认为是没有信息的，可以删除它们，以避免它们被理解为预测的信号。然而，有时，类似的词对预测很有用，比如在对写作风格或性格进行分类时。</p>
+
 <p>在选择停用词时应当尽可能地谨慎，流行的停止词列表可能包括对某些任务(如计算机)具有高度信息性的词。</p>
-<p>同时还应该确保停止单词列表具有与矢量化器中使用的相同的预处理和标记。单词&quot;we’ve&quot;被<code>CountVectorizer</code>的默认记号分配器分割成&quot;we&quot;和&quot;ve&rdquo;，所以如果&quot;we’ve&quot;在停止词列表中，但&quot;ve&quot;不在，&ldquo;ve&quot;会被保留在转换后的文本中。我们的矢量化器将尝试识别和警告某些类型的不一致性。</p>
+
+<p>同时还应该确保停止单词列表具有与矢量化器中使用的相同的预处理和标记。单词&quot;we’ve&quot;被<code>CountVectorizer</code>的默认记号分配器分割成&quot;we&quot;和&quot;ve&quot;，所以如果&quot;we’ve&quot;在停止词列表中，但&quot;ve&quot;不在，&quot;ve&quot;会被保留在转换后的文本中。我们的矢量化器将尝试识别和警告某些类型的不一致性。</p>
+
 <h2 id="tfidfvectorizer--tfidftransformer">TfidfVectorizer &amp; TfidfTransformer</h2>
+
 <p>上述模型有很多缺点，它没有考虑单词之间的顺序，也无法反映出一个句子的关键词。在这里，我们继续学习scikit库的另一个编码器——<code>TfidfVectorizer</code>。</p>
+
 <p>词频 - 逆向文档频率（term frequency–inverse document frequency，tf-idf）方法，对在某个特定文档中经常出现的术语给予很高的权重，但对在语料库的许多文档中都经常出现的术语给予的权重却不高。</p>
+
 <ul>
 <li>$TF: \frac{c(word\ in\ document)}{total\ number\ of\ words\ in\ document}$</li>
 <li>$IDF:log(\frac{number\ of\ documents}{number\ of\ documents\ with\ word+1})$</li>
 </ul>
+
 <p>这里在分母加一是因为在实际工作中，可能先有词表，再处理文档语料， 目标词有可能是不存在任何文档中的。</p>
+
 <p>TF-IDF就是同时考虑以上两个统计方法：$TF\times IDF$</p>
-<p>scikit-learn 在两个类中实现了TF-IDF 方法：<code>TfidfTransformer </code>和<code> TfidfVectorizer</code>，前者接受 <code>CountVectorizer</code> 生成的稀疏矩阵并将其变换，后者接受文本数据并完成词袋特征提取与 TF-IDF变换，二者都以文档为处理单位默认进行了l2正则化，具体参数可参见<a href="https://scikit-learn.org/stable/modules/feature_extraction.html">文档</a>。</p>
+
+<p>scikit-learn 在两个类中实现了TF-IDF 方法：<code>TfidfTransformer</code>和<code>TfidfVectorizer</code>，前者接受 <code>CountVectorizer</code> 生成的稀疏矩阵并将其变换，后者接受文本数据并完成词袋特征提取与 TF-IDF变换，二者都以文档为处理单位默认进行了l2正则化，具体参数可参见<a href="https://scikit-learn.org/stable/modules/feature_extraction.html">文档</a>。</p>
+
 <h3 id="tfidfvectorizer">TfidfVectorizer</h3>
+
 <p>为了体现TF-IDF的优越性，重新定义训练语料，这里使用了<code>fit_transform</code>，即对同一语料进行两个过程。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> TfidfVectorizer
 
@@ -420,19 +433,25 @@ corpus <span style="color:#ff79c6">=</span> [<span style="color:#f1fa8c">&#39;I 
     dtm <span style="color:#ff79c6">=</span> vectorize<span style="color:#ff79c6">.</span>fit_transform(doc)
     <span style="color:#ff79c6">return</span> pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
 
-get_dtm(corpus)
-</code></pre></div><p>输出的结果中，<code>I</code>由于长度小于2，没有进入特征词字典中，同时，由于<code>am</code>在两个document中均有出现，在每个document（每行）中，<code>am</code>的取值最小，这也体现了该统计方法的合理性。</p>
+get_dtm(corpus)</code></pre></div>
+<p>输出的结果中，<code>I</code>由于长度小于2，没有进入特征词字典中，同时，由于<code>am</code>在两个document中均有出现，在每个document（每行）中，<code>am</code>的取值最小，这也体现了该统计方法的合理性。</p>
+
 <h3 id="tfidftransformer">TfidfTransformer</h3>
+
 <p><code>TfidfTransformer</code>接收的对象不再像前者一样是一个document的list，它接收<code>CountVectorizer</code>统计后的词频矩阵，此处将上文使用<code>CountVectorizer</code>生成的<code>dtm</code>作为编码器的输入:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">from</span> sklearn.feature_extraction.text <span style="color:#ff79c6">import</span> TfidfTransformer
 
 transformer <span style="color:#ff79c6">=</span> TfidfTransformer(smooth_idf<span style="color:#ff79c6">=</span>False)
 tfidf <span style="color:#ff79c6">=</span> transformer<span style="color:#ff79c6">.</span>fit_transform(dtm)
-pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())
-</code></pre></div><p>其对同一语料得到的结果与<code> TfidfVectorizer</code>相同，也可以用上述理论进行分析。</p>
+pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.</span>toarray(), columns<span style="color:#ff79c6">=</span>vectorize<span style="color:#ff79c6">.</span>get_feature_names())</code></pre></div>
+<p>其对同一语料得到的结果与<code>TfidfVectorizer</code>相同，也可以用上述理论进行分析。</p>
+
 <p>虽然tf-idf标准化通常非常有用，但是可能有一种情况是二元变量显示会提供更好的特征。 这可以使用类 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer"><code>CountVectorizer</code></a> 的 <code>二进制</code> 参数来实现。 特别地，一些估计器，诸如 <a href="https://sklearn.apachecn.org/docs/master/naive_bayes.html#bernoulli-naive-bayes">伯努利朴素贝叶斯</a> 显式的使用离散的布尔随机变量。 而且，非常短的文本很可能影响 tf-idf 值，而二进制出现信息更稳定。</p>
+
 <p><strong>REFERENCE</strong></p>
+
 <p><a href="https://scikit-learn.org/stable/modules/feature_extraction.html">sklearn-Feature extraction</a></p>
+
 <p><a href="https://mp.weixin.qq.com/s?__biz=MzI1MTE2ODg4MA==&amp;mid=2650068998&amp;idx=1&amp;sn=af10c62d945129c92e9cf6d99f02ae3f&amp;chksm=f1f76919c680e00f7e85b05f0ac223c4f09e2c47d45968736c6d01ed0e763fa5142869327062&amp;scene=21#wechat_redirect">如何从文本中提取特征信息？</a></p>
 
 
@@ -536,7 +555,7 @@ pd<span style="color:#ff79c6">.</span>DataFrame(dtm<span style="color:#ff79c6">.
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Yijia Zheng 2020
+                    Copyright &copy; Yijia Zheng 2021
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe
